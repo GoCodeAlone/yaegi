@@ -146,12 +146,21 @@ func main() {
 func TestD3(t *testing.T) {
 	i := New(Options{})
 	_, err := i.Eval(`
-package main
+type T struct {
+	Name string
+}
 
-import "github.com/traefik/yaegi/_test/d2"
+func (t *T) F() { println(t.Name) }
+
+func NewT(s string) *T { return &T{s} }
+
+var (
+	X = NewT("test")
+	F = X.F
+)
 
 func main() {
-	f := d2.F
+	f := F
 	f()
 }
 `)
