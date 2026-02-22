@@ -1119,7 +1119,9 @@ func nodeType2(interp *Interpreter, sc *scope, n *node, seen []*node) (t *itype,
 
 	switch {
 	case t == nil:
-		err = n.cfgErrorf("nil type (could be trying to use a generic type constraint interface?): %s", n.kind)
+		if err == nil {
+			err = n.cfgErrorf("nil type (could be trying to use a generic type constraint interface?): %s", n.kind)
+		}
 	case t.name != "" && t.path != "":
 		t.str = t.path + "." + t.name
 	case t.cat == nilT:

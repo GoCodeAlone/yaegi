@@ -10,5 +10,5 @@ func main() {
 	println(t.String())
 }
 
-// Error:
-// ../_test/redeclaration-global2.go:5:2: time/redeclaration-global2.go redeclared in this block
+// Output:
+// 0001-01-01 00:00:00 +0000 UTC
