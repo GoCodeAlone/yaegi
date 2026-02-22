@@ -17,7 +17,7 @@ It powers executable Go scripts and plugins, in embedded interpreters or interac
 * Works everywhere Go works
 * All Go & runtime resources accessible from script (with control)
 * Security: `unsafe` and `syscall` packages neither used nor exported by default
-* Support the latest 2 major releases of Go (Go 1.21 and Go 1.22)
+* Support Go 1.26+
 
 ## Install
 
@@ -179,7 +179,21 @@ Beside the known [bugs] which are supposed to be fixed in the short term, there 
 - Representation of types by `reflect` and printing values using %T may give different results between compiled mode and interpreted mode.
 - Interpreting computation intensive code is likely to remain significantly slower than in compiled mode.
 
-Go modules are not supported yet. Until that, it is necessary to install the source into `$GOPATH/src/github.com/GoCodeAlone/yaegi` to pass all the tests.
+## Fork Information
+
+This is a maintained fork of [traefik/yaegi](https://github.com/traefik/yaegi) by the GoCodeAlone organization. It includes cherry-picked community contributions and bug fixes from upstream PRs that have not yet been merged into the original repository.
+
+### Changes from upstream
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes.
+
+Key improvements in this fork:
+- **Module path**: `github.com/GoCodeAlone/yaegi` (drop-in replacement with import path change)
+- **Go 1.26 support**: Updated dependencies and modernized codebase with `go fix`
+- **Faster extract**: 11-45x speedup for `yaegi extract` using `x/tools/go/packages`
+- **Generic function support**: Import generic functions from extracted Go code via `//yaegi:add` directive
+- **Improved stability**: Eval/EvalPath now recover from panics instead of crashing the host process
+- **Bug fixes**: Binary channel type aliases, re-import of identical packages, binary-to-source interface conversion, underscore parameter handling, and more
 
 ## Contributing
 
