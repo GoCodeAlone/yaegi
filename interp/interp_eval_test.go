@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"go/build"
 	"go/parser"
 	"io"
 	"log"
@@ -1717,7 +1716,7 @@ func TestStdio(t *testing.T) {
 }
 
 func TestNoGoFiles(t *testing.T) {
-	i := interp.New(interp.Options{GoPath: build.Default.GOPATH})
+	i := interp.New(interp.Options{GoPath: testGOPATH})
 	_, err := i.Eval(`import "github.com/GoCodeAlone/yaegi/_test/p3"`)
 	if strings.Contains(err.Error(), "no Go files in") {
 		return

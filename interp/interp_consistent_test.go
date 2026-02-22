@@ -2,7 +2,6 @@ package interp_test
 
 import (
 	"bytes"
-	"go/build"
 	"io"
 	"os"
 	"os/exec"
@@ -148,7 +147,7 @@ func TestInterpConsistencyBuild(t *testing.T) {
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			i := interp.New(interp.Options{GoPath: build.Default.GOPATH})
+			i := interp.New(interp.Options{GoPath: testGOPATH})
 			if err := i.Use(stdlib.Symbols); err != nil {
 				t.Fatal(err)
 			}
@@ -325,7 +324,7 @@ func TestInterpErrorConsistency(t *testing.T) {
 			filePath := filepath.Join("..", "_test", test.fileName)
 
 			var stderr bytes.Buffer
-			i := interp.New(interp.Options{GoPath: build.Default.GOPATH, Stderr: &stderr})
+			i := interp.New(interp.Options{GoPath: testGOPATH, Stderr: &stderr})
 			if err := i.Use(stdlib.Symbols); err != nil {
 				t.Fatal(err)
 			}

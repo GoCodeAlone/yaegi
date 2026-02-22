@@ -2,7 +2,6 @@ package interp_test
 
 import (
 	"bytes"
-	"go/build"
 	"go/parser"
 	"go/token"
 	"os"
@@ -62,7 +61,7 @@ func runCheck(t *testing.T, p string) {
 	wanted = strings.TrimSpace(wanted)
 
 	if goPath == "" {
-		goPath = build.Default.GOPATH
+		goPath = testGOPATH
 	}
 	var stdout, stderr bytes.Buffer
 	i := interp.New(interp.Options{GoPath: goPath, Stdout: &stdout, Stderr: &stderr})
