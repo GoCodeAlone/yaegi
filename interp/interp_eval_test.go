@@ -20,8 +20,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
+	"github.com/GoCodeAlone/yaegi/interp"
+	"github.com/GoCodeAlone/yaegi/stdlib"
 )
 
 func init() { log.SetFlags(log.Lshortfile) }
@@ -766,7 +766,7 @@ func TestEvalMissingSymbol(t *testing.T) {
 	}
 	i := interp.New(interp.Options{})
 	if err := i.Use(interp.Exports{"p/p": map[string]reflect.Value{
-		"S1": reflect.Zero(reflect.TypeOf(&S1{})),
+		"S1": reflect.Zero(reflect.TypeFor[*S1]()),
 	}}); err != nil {
 		t.Fatal(err)
 	}
@@ -1355,14 +1355,14 @@ func TestConcurrentEvals3(t *testing.T) {
 		allDone <- true
 	}
 
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		go func() {
 			runREPL()
 		}()
 	}
 
 	timeout := time.NewTimer(10 * time.Second)
-	for i := 0; i < 2; i++ {
+	for range 2 {
 		select {
 		case <-allDone:
 		case <-timeout.C:
@@ -1718,7 +1718,7 @@ func TestStdio(t *testing.T) {
 
 func TestNoGoFiles(t *testing.T) {
 	i := interp.New(interp.Options{GoPath: build.Default.GOPATH})
-	_, err := i.Eval(`import "github.com/traefik/yaegi/_test/p3"`)
+	_, err := i.Eval(`import "github.com/GoCodeAlone/yaegi/_test/p3"`)
 	if strings.Contains(err.Error(), "no Go files in") {
 		return
 	}

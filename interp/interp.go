@@ -221,7 +221,7 @@ type Interpreter struct {
 
 const (
 	mainID     = "main"
-	selfPrefix = "github.com/traefik/yaegi"
+	selfPrefix = "github.com/GoCodeAlone/yaegi"
 	selfPath   = selfPrefix + "/interp/interp"
 	// DefaultSourceName is the name used by default when the name of the input
 	// source file has not been specified for an Eval.
@@ -493,6 +493,14 @@ func (interp *Interpreter) resizeFrame() {
 // Eval evaluates Go code represented as a string. Eval returns the last result
 // computed by the interpreter, and a non nil error in case of failure.
 func (interp *Interpreter) Eval(src string) (res reflect.Value, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			var pc [64]uintptr
+			n := runtime.Callers(1, pc[:])
+			err = Panic{Value: r, Callers: pc[:n], Stack: debug.Stack()}
+		}
+	}()
+
 	return interp.eval(src, "", true)
 }
 
@@ -500,6 +508,14 @@ func (interp *Interpreter) Eval(src string) (res reflect.Value, err error) {
 // by the interpreter, and a non nil error in case of failure.
 // The main function of the main package is executed if present.
 func (interp *Interpreter) EvalPath(path string) (res reflect.Value, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			var pc [64]uintptr
+			n := runtime.Callers(1, pc[:])
+			err = Panic{Value: r, Callers: pc[:n], Stack: debug.Stack()}
+		}
+	}()
+
 	path = filepath.ToSlash(path) // Ensure path is in Unix format. Since we work with fs.FS, we need to use Unix path.
 	if !isFile(interp.opt.filesystem, path) {
 		_, err := interp.importSrc(mainID, path, NoTest)
@@ -577,14 +593,7 @@ func (interp *Interpreter) EvalWithContext(ctx context.Context, src string) (ref
 
 	done := make(chan struct{})
 	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				var pc [64]uintptr
-				n := runtime.Callers(1, pc[:])
-				err = Panic{Value: r, Callers: pc[:n], Stack: debug.Stack()}
-			}
-			close(done)
-		}()
+		defer close(done)
 		v, err = interp.Eval(src)
 	}()
 

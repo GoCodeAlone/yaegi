@@ -1,5 +1,4 @@
 //go:build go1.21
-// +build go1.21
 
 // Package unsafe2 provides helpers to generate recursive struct types.
 package unsafe2

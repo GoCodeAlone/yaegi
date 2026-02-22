@@ -2,9 +2,9 @@
 <img width="400" src="doc/images/yaegi.png" alt="Yaegi" title="Yaegi" />
 </p>
 
-[![release](https://img.shields.io/github/tag-date/traefik/yaegi.svg?label=alpha)](https://github.com/traefik/yaegi/releases)
-[![Build Status](https://github.com/traefik/yaegi/actions/workflows/main.yml/badge.svg)](https://github.com/traefik/yaegi/actions/workflows/main.yml)
-[![GoDoc](https://godoc.org/github.com/traefik/yaegi?status.svg)](https://pkg.go.dev/mod/github.com/traefik/yaegi)
+[![release](https://img.shields.io/github/tag-date/GoCodeAlone/yaegi.svg?label=alpha)](https://github.com/GoCodeAlone/yaegi/releases)
+[![Build Status](https://github.com/GoCodeAlone/yaegi/actions/workflows/main.yml/badge.svg)](https://github.com/GoCodeAlone/yaegi/actions/workflows/main.yml)
+[![GoDoc](https://godoc.org/github.com/GoCodeAlone/yaegi?status.svg)](https://pkg.go.dev/mod/github.com/GoCodeAlone/yaegi)
 
 Yaegi is Another Elegant Go Interpreter.
 It powers executable Go scripts and plugins, in embedded interpreters or interactive shells, on top of the Go runtime.
@@ -17,20 +17,20 @@ It powers executable Go scripts and plugins, in embedded interpreters or interac
 * Works everywhere Go works
 * All Go & runtime resources accessible from script (with control)
 * Security: `unsafe` and `syscall` packages neither used nor exported by default
-* Support the latest 2 major releases of Go (Go 1.21 and Go 1.22)
+* Support Go 1.26+
 
 ## Install
 
 ### Go package
 
 ```go
-import "github.com/traefik/yaegi/interp"
+import "github.com/GoCodeAlone/yaegi/interp"
 ```
 
 ### Command-line executable
 
 ```bash
-go install github.com/traefik/yaegi/cmd/yaegi@latest
+go install github.com/GoCodeAlone/yaegi/cmd/yaegi@latest
 ```
 
 Note that you can use [rlwrap](https://github.com/hanslub42/rlwrap) (install with your favorite package manager),
@@ -39,7 +39,7 @@ and alias the `yaegi` command in `alias yaegi='rlwrap yaegi'` in your `~/.bashrc
 ### CI Integration
 
 ```bash
-curl -sfL https://raw.githubusercontent.com/traefik/yaegi/master/install.sh | bash -s -- -b $GOPATH/bin v0.9.0
+curl -sfL https://raw.githubusercontent.com/GoCodeAlone/yaegi/master/install.sh | bash -s -- -b $GOPATH/bin v0.9.0
 ```
 
 ## Usage
@@ -52,8 +52,8 @@ Create an interpreter with `New()`, run Go code with `Eval()`:
 package main
 
 import (
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
+	"github.com/GoCodeAlone/yaegi/interp"
+	"github.com/GoCodeAlone/yaegi/stdlib"
 )
 
 func main() {
@@ -86,7 +86,7 @@ The following program is compiled ahead of time, except `bar()` which is interpr
 ```go
 package main
 
-import "github.com/traefik/yaegi/interp"
+import "github.com/GoCodeAlone/yaegi/interp"
 
 const src = `package foo
 func Bar(s string) string { return s + "-Foo" }`
@@ -140,7 +140,7 @@ $ yaegi
 Or interpret Go packages, directories or files, including itself:
 
 ```console
-$ yaegi -syscall -unsafe -unrestricted github.com/traefik/yaegi/cmd/yaegi
+$ yaegi -syscall -unsafe -unrestricted github.com/GoCodeAlone/yaegi/cmd/yaegi
 >
 ```
 
@@ -179,7 +179,21 @@ Beside the known [bugs] which are supposed to be fixed in the short term, there 
 - Representation of types by `reflect` and printing values using %T may give different results between compiled mode and interpreted mode.
 - Interpreting computation intensive code is likely to remain significantly slower than in compiled mode.
 
-Go modules are not supported yet. Until that, it is necessary to install the source into `$GOPATH/src/github.com/traefik/yaegi` to pass all the tests.
+## Fork Information
+
+This is a maintained fork of [traefik/yaegi](https://github.com/traefik/yaegi) by the GoCodeAlone organization. It includes cherry-picked community contributions and bug fixes from upstream PRs that have not yet been merged into the original repository.
+
+### Changes from upstream
+
+See [CHANGELOG.md](CHANGELOG.md) for a detailed list of changes.
+
+Key improvements in this fork:
+- **Module path**: `github.com/GoCodeAlone/yaegi` (drop-in replacement with import path change)
+- **Go 1.26 support**: Updated dependencies and modernized codebase with `go fix`
+- **Faster extract**: 11-45x speedup for `yaegi extract` using `x/tools/go/packages`
+- **Generic function support**: Import generic functions from extracted Go code via `//yaegi:add` directive
+- **Improved stability**: Eval/EvalPath now recover from panics instead of crashing the host process
+- **Bug fixes**: Binary channel type aliases, re-import of identical packages, binary-to-source interface conversion, underscore parameter handling, and more
 
 ## Contributing
 
@@ -190,7 +204,7 @@ Go modules are not supported yet. Until that, it is necessary to install the sou
 [Apache 2.0][License].
 
 [specs]: https://golang.org/ref/spec
-[docs]: https://pkg.go.dev/github.com/traefik/yaegi
-[license]: https://github.com/traefik/yaegi/blob/master/LICENSE
-[github]: https://github.com/traefik/yaegi
-[bugs]: https://github.com/traefik/yaegi/issues?q=is%3Aissue+is%3Aopen+label%3Abug
+[docs]: https://pkg.go.dev/github.com/GoCodeAlone/yaegi
+[license]: https://github.com/GoCodeAlone/yaegi/blob/master/LICENSE
+[github]: https://github.com/GoCodeAlone/yaegi
+[bugs]: https://github.com/GoCodeAlone/yaegi/issues?q=is%3Aissue+is%3Aopen+label%3Abug

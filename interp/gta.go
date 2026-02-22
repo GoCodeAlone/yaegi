@@ -2,6 +2,7 @@ package interp
 
 import (
 	"path"
+	"strings"
 )
 
 // gta performs a global types analysis on the AST, registering types,
@@ -240,7 +241,17 @@ func (interp *Interpreter) gta(root *node, rpath, importPath, pkgName string) ([
 							typ = typ.Elem()
 							kind = typeSym
 						}
-						sc.sym[n] = &symbol{kind: kind, typ: valueTOf(typ, withScope(sc)), rval: v}
+						if gf, ok := v.Interface().(GenericFunc); ok {
+							samePath := strings.HasSuffix(ipath, importPath)
+							if !samePath {
+								if _, cerr := interp.Compile(string(gf)); cerr != nil {
+									err = cerr
+									return false
+								}
+							}
+						} else {
+							sc.sym[n] = &symbol{kind: kind, typ: valueTOf(typ, withScope(sc)), rval: v}
+						}
 					}
 				default: // import symbols in package namespace
 					if name == "" {
@@ -260,7 +271,7 @@ func (interp *Interpreter) gta(root *node, rpath, importPath, pkgName string) ([
 					if sym, exists := sc.sym[name]; !exists {
 						sc.sym[name] = &symbol{kind: pkgSym, typ: &itype{cat: binPkgT, path: ipath, scope: sc}}
 						break
-					} else if sym.kind == pkgSym && sym.typ.cat == srcPkgT && sym.typ.path == ipath {
+					} else if sym.kind == pkgSym && sym.typ.cat == binPkgT && sym.typ.path == ipath {
 						// ignore re-import of identical package
 						break
 					}

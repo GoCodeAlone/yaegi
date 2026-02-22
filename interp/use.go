@@ -10,7 +10,7 @@ import (
 	"path"
 	"reflect"
 
-	gen "github.com/traefik/yaegi/stdlib/generic"
+	gen "github.com/GoCodeAlone/yaegi/stdlib/generic"
 )
 
 // Symbols returns a map of interpreter exported symbol values for the given
@@ -134,6 +134,18 @@ func (interp *Interpreter) Use(values Exports) error {
 		}
 		if k == selfPath {
 			interp.binPkg[importPath]["Self"] = reflect.ValueOf(interp)
+		}
+	}
+
+	for k, v := range values {
+		packageName := path.Base(k)
+		for _, sym := range v {
+			if gf, ok := sym.Interface().(GenericFunc); ok {
+				str := fmt.Sprintf("package %s\nimport . %q\n%s", packageName, path.Dir(k), string(gf))
+				if _, err := interp.Compile(str); err != nil {
+					return err
+				}
+			}
 		}
 	}
 
