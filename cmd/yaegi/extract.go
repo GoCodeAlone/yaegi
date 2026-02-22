@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/traefik/yaegi/extract"
+	"github.com/GoCodeAlone/yaegi/extract"
 )
 
 func extractCmd(arg []string) error {
@@ -28,7 +28,7 @@ func extractCmd(arg []string) error {
 	eflag.StringVar(&exclude, "exclude", "", "comma separated list of regexp matching symbols to exclude")
 	eflag.StringVar(&include, "include", "", "comma separated list of regexp matching symbols to include")
 	eflag.StringVar(&tag, "tag", "", "comma separated list of build tags to be added to the created package")
-	eflag.BoolVar(&outer, "outer", false, "generated code is not in github.com/traefik/yaegi/stdlib")
+	eflag.BoolVar(&outer, "outer", false, "generated code is not in github.com/GoCodeAlone/yaegi/stdlib")
 
 	eflag.Usage = func() {
 		fmt.Println("Usage: yaegi extract [options] packages...")

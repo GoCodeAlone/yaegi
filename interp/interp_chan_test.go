@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/traefik/yaegi/interp"
+	"github.com/GoCodeAlone/yaegi/interp"
 )
 
 // IntChan is a channel type alias for testing.

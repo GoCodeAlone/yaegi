@@ -37,7 +37,7 @@ package {{.Dest}}
 
 import (
 {{- if .Outer }}
-	"github.com/traefik/yaegi/stdlib"
+	"github.com/GoCodeAlone/yaegi/stdlib"
 {{- end}}
 {{- range $key, $value := .Imports }}
 	{{- if $value}}
@@ -144,7 +144,7 @@ type Extractor struct {
 	Exclude []string // Comma separated list of regexp matching symbols to exclude.
 	Include []string // Comma separated list of regexp matching symbols to include.
 	Tag     []string // Comma separated of build tags to be added to the created package.
-	Outer   bool     // The project that generates code is not github.com/traefik/yaegi/stdlib.
+	Outer   bool     // The project that generates code is not github.com/GoCodeAlone/yaegi/stdlib.
 }
 
 func (e *Extractor) genContent(importPath string, p *types.Package, fset *token.FileSet) ([]byte, error) {
@@ -231,7 +231,7 @@ func (e *Extractor) genContent(importPath string, p *types.Package, fset *token.
 					continue
 				}
 				val[name] = Val{fmt.Sprintf("interp.GenericFunc(%q)", b), false}
-				imports["github.com/traefik/yaegi/interp"] = true
+				imports["github.com/GoCodeAlone/yaegi/interp"] = true
 				continue
 			}
 			val[name] = Val{pname, false}
@@ -250,8 +250,7 @@ func (e *Extractor) genContent(importPath string, p *types.Package, fset *token.
 					continue
 				}
 				var methods []Method
-				for i := 0; i < t.NumMethods(); i++ {
-					f := t.Method(i)
+				for f := range t.Methods() {
 					if !f.Exported() {
 						continue
 					}
@@ -341,7 +340,7 @@ func (e *Extractor) genContent(importPath string, p *types.Package, fset *token.
 	}
 
 	b := new(bytes.Buffer)
-	data := map[string]interface{}{
+	data := map[string]any{
 		"Dest":       e.Dest,
 		"Imports":    imports,
 		"ImportPath": importPath,

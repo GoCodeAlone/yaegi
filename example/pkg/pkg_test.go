@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
+	"github.com/GoCodeAlone/yaegi/interp"
+	"github.com/GoCodeAlone/yaegi/stdlib"
 )
 
 func TestPackages(t *testing.T) {
@@ -102,7 +102,6 @@ func TestPackages(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		test := test
 		t.Run(test.desc, func(t *testing.T) {
 			goPath, err := filepath.Abs(filepath.FromSlash(test.goPath))
 			if err != nil {
@@ -148,7 +147,7 @@ func TestPackages(t *testing.T) {
 	}
 }
 
-func fatalStderrf(t *testing.T, format string, args ...interface{}) {
+func fatalStderrf(t *testing.T, format string, args ...any) {
 	t.Helper()
 
 	fmt.Fprintf(os.Stderr, format+"\n", args...)
@@ -169,7 +168,6 @@ func TestPackagesError(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		test := test
 		t.Run(test.desc, func(t *testing.T) {
 			// Init go interpreter
 			i := interp.New(interp.Options{GoPath: test.goPath})

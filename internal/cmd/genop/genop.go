@@ -1171,7 +1171,7 @@ func main() {
 	}
 
 	b := &bytes.Buffer{}
-	data := map[string]interface{}{
+	data := map[string]any{
 		"Arithmetic": map[string]Op{
 			"add":    {"+", true, true, true, false, false, false},
 			"sub":    {"-", false, true, true, false, false, false},

@@ -11,9 +11,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/traefik/yaegi/interp"
-	"github.com/traefik/yaegi/stdlib"
-	"github.com/traefik/yaegi/stdlib/unsafe"
+	"github.com/GoCodeAlone/yaegi/interp"
+	"github.com/GoCodeAlone/yaegi/stdlib"
+	"github.com/GoCodeAlone/yaegi/stdlib/unsafe"
 )
 
 // The following tests sometimes (not always) crash with go1.21 but not with go1.20 or go1.22.
@@ -115,11 +115,11 @@ func wantedFromComment(p string) (res string, goPath string, err bool) {
 		}
 		goPath = filepath.Join(wd, "..", "_test", strings.TrimPrefix(parts[0], "GOPATH:"))
 	}
-	if strings.HasPrefix(text, "Output:\n") {
-		return strings.TrimPrefix(text, "Output:\n"), goPath, false
+	if after, ok := strings.CutPrefix(text, "Output:\n"); ok {
+		return after, goPath, false
 	}
-	if strings.HasPrefix(text, "Error:\n") {
-		return strings.TrimPrefix(text, "Error:\n"), goPath, true
+	if after, ok := strings.CutPrefix(text, "Error:\n"); ok {
+		return after, goPath, true
 	}
 	return
 }

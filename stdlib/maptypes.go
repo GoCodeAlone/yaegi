@@ -11,8 +11,8 @@ import (
 
 func init() {
 	mt := []reflect.Type{
-		reflect.TypeOf((*fmt.Formatter)(nil)).Elem(),
-		reflect.TypeOf((*fmt.Stringer)(nil)).Elem(),
+		reflect.TypeFor[fmt.Formatter](),
+		reflect.TypeFor[fmt.Stringer](),
 	}
 
 	MapTypes[reflect.ValueOf(fmt.Errorf)] = mt
@@ -33,26 +33,26 @@ func init() {
 	MapTypes[reflect.ValueOf(log.Panicf)] = mt
 	MapTypes[reflect.ValueOf(log.Panicln)] = mt
 
-	mt = []reflect.Type{reflect.TypeOf((*fmt.Scanner)(nil)).Elem()}
+	mt = []reflect.Type{reflect.TypeFor[fmt.Scanner]()}
 
 	MapTypes[reflect.ValueOf(fmt.Scan)] = mt
 	MapTypes[reflect.ValueOf(fmt.Scanf)] = mt
 	MapTypes[reflect.ValueOf(fmt.Scanln)] = mt
 
 	MapTypes[reflect.ValueOf(json.Marshal)] = []reflect.Type{
-		reflect.TypeOf((*json.Marshaler)(nil)).Elem(),
-		reflect.TypeOf((*encoding.TextMarshaler)(nil)).Elem(),
+		reflect.TypeFor[json.Marshaler](),
+		reflect.TypeFor[encoding.TextMarshaler](),
 	}
 	MapTypes[reflect.ValueOf(json.Unmarshal)] = []reflect.Type{
-		reflect.TypeOf((*json.Unmarshaler)(nil)).Elem(),
-		reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem(),
+		reflect.TypeFor[json.Unmarshaler](),
+		reflect.TypeFor[encoding.TextUnmarshaler](),
 	}
 	MapTypes[reflect.ValueOf(xml.Marshal)] = []reflect.Type{
-		reflect.TypeOf((*xml.Marshaler)(nil)).Elem(),
-		reflect.TypeOf((*encoding.TextMarshaler)(nil)).Elem(),
+		reflect.TypeFor[xml.Marshaler](),
+		reflect.TypeFor[encoding.TextMarshaler](),
 	}
 	MapTypes[reflect.ValueOf(xml.Unmarshal)] = []reflect.Type{
-		reflect.TypeOf((*xml.Unmarshaler)(nil)).Elem(),
-		reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem(),
+		reflect.TypeFor[xml.Unmarshaler](),
+		reflect.TypeFor[encoding.TextUnmarshaler](),
 	}
 }

@@ -4,26 +4,26 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/traefik/yaegi/internal/unsafe2"
+	"github.com/GoCodeAlone/yaegi/internal/unsafe2"
 )
 
 func TestSwapFieldType(t *testing.T) {
 	f := []reflect.StructField{
 		{
 			Name: "A",
-			Type: reflect.TypeOf(int(0)),
+			Type: reflect.TypeFor[int](),
 		},
 		{
 			Name: "B",
-			Type: reflect.PtrTo(unsafe2.DummyType),
+			Type: reflect.PointerTo(unsafe2.DummyType),
 		},
 		{
 			Name: "C",
-			Type: reflect.TypeOf(int64(0)),
+			Type: reflect.TypeFor[int64](),
 		},
 	}
 	typ := reflect.StructOf(f)
-	ntyp := reflect.PtrTo(typ)
+	ntyp := reflect.PointerTo(typ)
 
 	unsafe2.SetFieldType(typ, 1, ntyp)
 
