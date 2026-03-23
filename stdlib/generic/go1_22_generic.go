@@ -1,4 +1,4 @@
-//go:build go1.22
+//go:build go1.22 && !go1.26
 
 package generic
 
